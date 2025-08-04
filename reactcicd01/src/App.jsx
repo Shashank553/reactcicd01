@@ -7,10 +7,12 @@ function App() {
 
   return (
     <div className="App">
-      <div className="logos">
-        <img src={reactLogo} className="logo react" alt="React logo" />
-        <img src={reactLogo} className="logo react" alt="React logo" />
-      </div>
+     <div className="logos">
+  <img src={reactLogo} className="logo react" alt="React logo" />
+  <img src={reactLogo} className="logo react rotate-logo" alt="React logo" />
+</div>
+
+
       <h1>Vite + React</h1>
       <h2 className="highlight-text">Hi This is  second version GIT ACTION EXPERIMENT</h2>
         <h2 className="highlight-text">Hi This is  second version GIT ACTION EXPERIMENT</h2>

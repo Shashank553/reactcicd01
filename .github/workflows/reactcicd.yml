@@ -1,26 +1,46 @@
-name: Deploy Vite site to GitHub Pages
+name: CI/CD React App
 
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write  
 
 jobs:
-  build-deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup Node.js
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
+
       - name: Install dependencies
-        run: npm install
-        working-directory: ./reactcicd01/reactcicd01
-      - name: Build
+        run: npm ci
+
+      - name: Run tests
+        run: npm test --if-present
+
+      - name: Build the project
         run: npm run build
-        working-directory: ./reactcicd01/reactcicd01
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./reactcicd01/reactcicd01/dist
+
+      # Configure Git identity
+      - name: Configure Git
+        run: |
+          git config --global user.name "Shashank553"
+          git config --global user.email "shashanksreenivas830@gmaile.com"
+
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
+          npm run deploy
